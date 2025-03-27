@@ -1,23 +1,26 @@
 class Solution {
     public int trap(int[] height) {
-        if (height.length == 0) return 0;
+       if (height == null || height.length == 0) return 0;
+        
+        int n = height.length;
+        int[] leftMax = new int[n];
+        int[] rightMax = new int[n];
+        int trappedWater = 0;
 
-      //using two pointer L && R.
-        int ans = 0;
-        int l = 0, r = height.length - 1;
-        int maxL = height[l];
-        int maxR = height[r];
-
-        while (l < r) {
-            if (maxL < maxR) {
-                ans += Math.max(0, maxL - height[l]);
-                maxL = Math.max(maxL, height[++l]);
-            } else {
-                ans += Math.max(0, maxR - height[r]);
-                maxR = Math.max(maxR, height[--r]);
-            }
+        leftMax[0] = height[0];
+        for (int i = 1; i < n; i++) {
+            leftMax[i] = Math.max(leftMax[i - 1], height[i]);
         }
 
-        return ans;
+        rightMax[n - 1] = height[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            rightMax[i] = Math.max(rightMax[i + 1], height[i]);
+        }
+
+        for (int i = 0; i < n; i++) {
+            trappedWater += Math.min(leftMax[i], rightMax[i]) - height[i];
+        }
+
+        return trappedWater;
     }
 }
