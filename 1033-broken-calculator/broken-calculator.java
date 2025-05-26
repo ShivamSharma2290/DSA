@@ -1,12 +1,20 @@
 class Solution {
-    public int brokenCalc(int startValue, int target) {
-        if(startValue>=target) return startValue-target;
-        if(target%2==0){
-            return 1+brokenCalc(startValue,target/2);
-
-        }else{
-            return 1+brokenCalc(startValue,target+1);
+    public int brokenCalc(int start, int target) {
+        //TC : O(nlog n).
+        int ans = 0;
+        while(target>start)
+        {
+            if(target%2==1)
+            {
+                target++;
+            }
+            else
+            {
+                target/=2;
+            }
+            ans++;
         }
-        
+        return ans + start-target;
     }
 }
+
