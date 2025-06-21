@@ -1,8 +1,5 @@
-import java.util.HashMap;
-import java.util.Map;
-
 class TrieNode {
-    Map<Character, TrieNode> children = new HashMap<>();
+    TrieNode[] children = new TrieNode[26];
     boolean isEndOfWord = false;
 }
 
@@ -16,8 +13,11 @@ public class Trie {
     public void insert(String word) {
         TrieNode current = root;
         for (char ch : word.toCharArray()) {
-            current.children.putIfAbsent(ch, new TrieNode());
-            current = current.children.get(ch);
+            int index = ch - 'a';
+            if (current.children[index] == null) {
+                current.children[index] = new TrieNode();
+            }
+            current = current.children[index];
         }
         current.isEndOfWord = true;
     }
@@ -32,17 +32,19 @@ public class Trie {
         return node != null;
     }
 
-    private TrieNode searchNode(String word) {
+    private TrieNode searchNode(String str) {
         TrieNode current = root;
-        for (char ch : word.toCharArray()) {
-            if (!current.children.containsKey(ch)) {
+        for (char ch : str.toCharArray()) {
+            int index = ch - 'a';
+            if (current.children[index] == null) {
                 return null;
             }
-            current = current.children.get(ch);
+            current = current.children[index];
         }
         return current;
     }
 }
+
 
 /**
  * Your Trie object will be instantiated and called as such:
